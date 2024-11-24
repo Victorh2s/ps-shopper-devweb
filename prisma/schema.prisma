@@ -21,11 +21,14 @@ model Drivers {
   rating      Float
   minKmFee    Float
   Rides       Rides[]
+  createdAt    DateTime @default(now())              
+  updatedAt    DateTime @updatedAt()                
+  deletedAt    DateTime?  
 }
 
 
 model Rides {
-  id          Int     @id @default(autoincrement())
+  customer_id          Int     @id @default(autoincrement())
   origin      String
   destination String
   distance    Int
@@ -33,5 +36,8 @@ model Rides {
   value       Int
   driver      Drivers @relation(fields: [driver_id], references: [id])
   driver_id   Int
+  createdAt    DateTime @default(now())              
+  updatedAt    DateTime @updatedAt()                
+  deletedAt    DateTime?  
 }
 

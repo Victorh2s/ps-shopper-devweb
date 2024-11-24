@@ -3,10 +3,11 @@ import { PrismaService } from "./prisma.service";
 import {
   IGetRidesByQuerys,
   ISaveRide,
+  RideRepository,
 } from "src/modules/ride/interfaces/prisma-ride-repository";
 
 @Injectable()
-export class PrismaRideDatabase {
+export class PrismaRideDatabase implements RideRepository {
   constructor(private prisma: PrismaService) {}
 
   async createRide(data: ISaveRide) {

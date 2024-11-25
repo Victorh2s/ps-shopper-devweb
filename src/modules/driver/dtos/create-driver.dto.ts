@@ -18,12 +18,15 @@ export class CreateDriverDto {
 
   @IsString({ message: "Esse campo precisar preenchido como uma 'String'" })
   @MaxLength(150, {
-    message: "O descrição do carro deve ter até 150 caracteres",
+    message: "O descrição do veículo deve ter até 150 caracteres",
   })
-  car: string;
+  vehicle: string;
+
+  @IsNumber()
+  rating: number;
 
   @IsString({ message: "Esse campo precisar preenchido como uma 'String'" })
-  rating: string;
+  comment: string;
 
   @IsNumber()
   @IsNotEmpty({

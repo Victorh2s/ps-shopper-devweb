@@ -9,8 +9,36 @@ import {
 export class PrismaDriverDatabase implements DriverRepository {
   constructor(private prisma: PrismaService) {}
 
-  async createDriver(data: ICreateDriver) {
-    await this.prisma.drivers.create({ data });
+  async createDriver({
+    name,
+    description,
+    vehicle,
+    rating,
+    comment,
+    min_km_fee,
+    min_trip_km,
+  }: ICreateDriver) {
+    await this.prisma.drivers.create({
+      data: {
+        name,
+        description,
+        vehicle,
+        min_km_fee,
+        min_trip_km,
+        Review: {
+          create: {
+            rating,
+            comment,
+          },
+        },
+      },
+    });
     return;
+  }
+
+  async getDrivers() {
+    return await this.prisma.drivers.findMany({
+      include: { Review: true },
+    });
   }
 }

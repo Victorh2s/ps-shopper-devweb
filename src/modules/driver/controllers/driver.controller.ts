@@ -12,8 +12,9 @@ export class DriverController {
     {
       name,
       description,
+      vehicle,
+      comment,
       rating,
-      car,
       min_km_fee,
       min_trip_km,
     }: CreateDriverDto,
@@ -21,8 +22,9 @@ export class DriverController {
     await this.driverService.createDriver({
       name,
       description,
+      comment,
       rating,
-      car,
+      vehicle,
       min_km_fee,
       min_trip_km,
     });

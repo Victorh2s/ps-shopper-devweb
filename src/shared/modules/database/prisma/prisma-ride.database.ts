@@ -11,13 +11,13 @@ export class PrismaRideDatabase implements RideRepository {
   constructor(private prisma: PrismaService) {}
 
   async createRide({ customer_id, data }: ICreateRide) {
-    const findUser = await this.prisma.user.findUnique({
+    const findUser = await this.prisma.users.findUnique({
       where: {
         customer_id,
       },
     });
     if (!findUser) {
-      await this.prisma.user.create({
+      await this.prisma.users.create({
         data: {
           customer_id,
         },
@@ -29,7 +29,7 @@ export class PrismaRideDatabase implements RideRepository {
   }
 
   async getRidesByQuerys({ customer_id, driver_id }: IGetRidesByQuerys) {
-    const userId = await this.prisma.user.findUnique({
+    const userId = await this.prisma.users.findUnique({
       where: {
         customer_id,
       },

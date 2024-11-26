@@ -44,7 +44,7 @@ __decorate([
     __metadata("design:type", String)
 ], ConfirmRideDto.prototype, "destination", void 0);
 __decorate([
-    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNumber)({}, { message: "O campo 'distance' precisa ser preenchido como número." }),
     (0, class_validator_1.IsNotEmpty)({
         message: "O campo 'distance' precisa ser preenchido.",
     }),
@@ -66,7 +66,7 @@ __decorate([
     __metadata("design:type", driver_ride_dto_1.DriverDto)
 ], ConfirmRideDto.prototype, "driver", void 0);
 __decorate([
-    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNumber)({}, { message: "O campo 'value' precisa ser preenchido como número." }),
     (0, class_validator_1.IsNotEmpty)({
         message: "O campo 'value' precisa ser preenchido.",
     }),

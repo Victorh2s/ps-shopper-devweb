@@ -16,20 +16,74 @@ let PrismaRideDatabase = class PrismaRideDatabase {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async createRide(data) {
+    async createRide({ customer_id, data }) {
+        const findUser = await this.prisma.users.findUnique({
+            where: {
+                customer_id,
+            },
+        });
+        if (!findUser) {
+            await this.prisma.users.create({
+                data: {
+                    customer_id,
+                },
+            });
+        }
         await this.prisma.rides.create({ data });
         return;
     }
     async getRidesByQuerys({ customer_id, driver_id }) {
-        const rides = await this.prisma.rides.findMany({
+        const userId = await this.prisma.users.findUnique({
             where: {
-                OR: [{ customer_id }, { driver_id }],
+                customer_id,
             },
-            include: {
-                driver: { select: { id: true, name: true } },
+            select: {
+                customer_id: true,
+                rides: {
+                    select: {
+                        id: true,
+                        createdAt: true,
+                        origin: true,
+                        destination: true,
+                        distance: true,
+                        duration: true,
+                        driver: {
+                            select: {
+                                id: true,
+                                name: true,
+                            },
+                        },
+                        value: true,
+                    },
+                    where: driver_id ? { driver_id: +driver_id } : undefined,
+                    orderBy: {
+                        createdAt: "desc",
+                    },
+                },
             },
         });
-        return rides;
+        if (!userId)
+            throw new common_1.HttpException({
+                error_code: "USER_NOT_FOUND",
+                message: "Usuário não foi encontrado com base no customer_id passado",
+            }, 404);
+        const formattedResponse = {
+            customer_id: userId.customer_id,
+            rides: userId.rides.map((ride) => ({
+                id: ride.id,
+                date: ride.createdAt,
+                origin: ride.origin,
+                destination: ride.destination,
+                distance: ride.distance,
+                duration: ride.duration,
+                driver: {
+                    id: ride.driver.id,
+                    name: ride.driver.name,
+                },
+                value: ride.value,
+            })),
+        };
+        return formattedResponse;
     }
 };
 exports.PrismaRideDatabase = PrismaRideDatabase;

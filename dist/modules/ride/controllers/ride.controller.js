@@ -18,6 +18,8 @@ const ride_service_1 = require("../services/ride.service");
 const calculate_ride_dto_1 = require("../dtos/calculate-ride.dto");
 const http_exception_filter_1 = require("../filters/http-exception.filter");
 const confirm_ride_dto_1 = require("../dtos/confirm-ride.dto");
+const get_rides_query_dto_1 = require("../dtos/get-rides-query.dto");
+const get_rides_param_dto_1 = require("../dtos/get-rides-param.dto");
 let RideController = class RideController {
     constructor(rideService) {
         this.rideService = rideService;
@@ -42,6 +44,13 @@ let RideController = class RideController {
         });
         return result;
     }
+    async getRidesByCustomerId({ customer_id }, { driver_id }) {
+        const result = await this.rideService.getRidesByCustomerId({
+            customer_id,
+            driver_id,
+        });
+        return result;
+    }
 };
 exports.RideController = RideController;
 __decorate([
@@ -60,6 +69,16 @@ __decorate([
     __metadata("design:paramtypes", [confirm_ride_dto_1.ConfirmRideDto]),
     __metadata("design:returntype", Promise)
 ], RideController.prototype, "confirmRide", null);
+__decorate([
+    (0, common_1.Get)("/:customer_id"),
+    (0, common_1.HttpCode)(200),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [get_rides_param_dto_1.GetRidesParamDto,
+        get_rides_query_dto_1.GetRidesQueryDto]),
+    __metadata("design:returntype", Promise)
+], RideController.prototype, "getRidesByCustomerId", null);
 exports.RideController = RideController = __decorate([
     (0, common_1.Controller)("ride"),
     (0, common_1.UseFilters)(http_exception_filter_1.CustomHttpExceptionFilter),

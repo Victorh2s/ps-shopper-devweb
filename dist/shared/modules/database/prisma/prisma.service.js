@@ -9,9 +9,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PrismaService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
+const drivers_1 = require("../../../../modules/driver/mock/drivers");
 let PrismaService = class PrismaService extends client_1.PrismaClient {
     async onModuleInit() {
-        await this.$connect();
+        try {
+            await this.$connect();
+            const drivers = await this.drivers.findMany();
+            if (drivers.length === 0) {
+                drivers_1.mockDrivers.map(async (data) => {
+                    await this.drivers.create({
+                        data: {
+                            name: data.name,
+                            description: data.description,
+                            vehicle: data.vehicle,
+                            min_km_fee: data.min_km_fee,
+                            min_trip_km: data.min_trip_km,
+                            Review: {
+                                create: {
+                                    rating: data.rating,
+                                    comment: data.comment,
+                                },
+                            },
+                        },
+                    });
+                });
+                console.log("Motoristas adicionados automaticamente no banco");
+            }
+        }
+        catch (error) {
+            console.error("Erro ao inicializar dados do Prisma:", error);
+        }
     }
 };
 exports.PrismaService = PrismaService;

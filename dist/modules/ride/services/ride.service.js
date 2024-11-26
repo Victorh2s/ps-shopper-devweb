@@ -30,9 +30,7 @@ let RideService = class RideService {
         const { data } = await axios_1.axiosMaps.post(`/maps/api/directions/json?origin=${origin}&destination=${destination}&key=${process.env.GOOGLE_API_KEY}`);
         const distanceInKm = data.routes[0].legs[0].distance.value / 1000;
         const drivers = await this.driverRepository.getDrivers();
-        const filterDriverForKm = drivers
-            ? drivers.filter((driver) => distanceInKm > driver.min_trip_km)
-            : drivers_1.mockDrivers.filter((driver) => distanceInKm > driver.min_trip_km);
+        const filterDriverForKm = drivers.filter((driver) => distanceInKm > driver.min_trip_km);
         const driversFormat = filterDriverForKm.map((driver) => {
             const totalValue = driver.min_km_fee * distanceInKm;
             return {
@@ -85,7 +83,7 @@ let RideService = class RideService {
             }, 406);
         }
         const data = {
-            customer_id,
+            user_id: customer_id,
             origin,
             destination,
             distance,
@@ -93,10 +91,26 @@ let RideService = class RideService {
             driver_id: driver.id,
             value,
         };
-        await this.rideRepository.createRide(data);
+        await this.rideRepository.createRide({ customer_id, data });
         return {
             success: true,
         };
+    }
+    async getRidesByCustomerId({ customer_id, driver_id }) {
+        if (driver_id) {
+            const driver = await this.driverRepository.getDriverById(driver_id);
+            if (!driver) {
+                throw new common_1.HttpException({
+                    error_code: "INVALID_DRIVER",
+                    message: "Motorista inválido",
+                }, 400);
+            }
+        }
+        const ridesByCustomerId = await this.rideRepository.getRidesByQuerys({
+            customer_id,
+            driver_id,
+        });
+        return ridesByCustomerId;
     }
 };
 exports.RideService = RideService;

@@ -18,21 +18,32 @@ export declare class PrismaDriverDatabase implements DriverRepository {
   getDrivers(): Promise<
     ({
       Review: {
-        driver_id: number;
         id: number;
         rating: number;
         comment: string;
+        driver_id: number;
       }[];
     } & {
       id: number;
-      createdAt: Date;
-      updatedAt: Date;
-      deletedAt: Date | null;
       name: string;
       description: string;
       vehicle: string;
       min_km_fee: number;
       min_trip_km: number;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt: Date | null;
     })[]
   >;
+  getDriverById(driver_id: number): Promise<{
+    id: number;
+    name: string;
+    description: string;
+    vehicle: string;
+    min_km_fee: number;
+    min_trip_km: number;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
+  }>;
 }

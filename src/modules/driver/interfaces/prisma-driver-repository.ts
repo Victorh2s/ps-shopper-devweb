@@ -38,4 +38,16 @@ export abstract class DriverRepository {
       deletedAt: Date | null;
     })[]
   >;
+
+  abstract getDriverById(driver_id: number): Promise<{
+    name: string;
+    id: number;
+    description: string;
+    vehicle: string;
+    min_km_fee: number;
+    min_trip_km: number;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
+  }>;
 }

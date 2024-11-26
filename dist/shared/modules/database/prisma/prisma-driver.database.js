@@ -39,6 +39,13 @@ let PrismaDriverDatabase = class PrismaDriverDatabase {
             include: { Review: true },
         });
     }
+    async getDriverById(driver_id) {
+        return await this.prisma.drivers.findUnique({
+            where: {
+                id: Number(driver_id),
+            },
+        });
+    }
 };
 exports.PrismaDriverDatabase = PrismaDriverDatabase;
 exports.PrismaDriverDatabase = PrismaDriverDatabase = __decorate([

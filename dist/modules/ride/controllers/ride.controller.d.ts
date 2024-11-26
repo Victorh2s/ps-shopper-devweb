@@ -1,6 +1,8 @@
 import { RideService } from "../services/ride.service";
 import { CalculateRideDto } from "../dtos/calculate-ride.dto";
 import { ConfirmRideDto } from "../dtos/confirm-ride.dto";
+import { GetRidesQueryDto } from "../dtos/get-rides-query.dto";
+import { GetRidesParamDto } from "../dtos/get-rides-param.dto";
 export declare class RideController {
   private readonly rideService;
   constructor(rideService: RideService);
@@ -20,13 +22,13 @@ export declare class RideController {
     distance: any;
     duration: any;
     options: {
-      id: any;
-      name: any;
-      description: any;
-      vehicle: any;
+      id: number;
+      name: string;
+      description: string;
+      vehicle: string;
       review: {
-        rating: any;
-        comment: any;
+        rating: number;
+        comment: string;
       };
       value: number;
     }[];
@@ -42,5 +44,24 @@ export declare class RideController {
     value,
   }: ConfirmRideDto): Promise<{
     success: boolean;
+  }>;
+  getRidesByCustomerId(
+    { customer_id }: GetRidesParamDto,
+    { driver_id }: GetRidesQueryDto,
+  ): Promise<{
+    customer_id: string;
+    rides: {
+      id: number;
+      date: Date;
+      origin: string;
+      destination: string;
+      distance: number;
+      duration: string;
+      driver: {
+        id: number;
+        name: string;
+      };
+      value: number;
+    }[];
   }>;
 }

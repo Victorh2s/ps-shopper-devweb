@@ -2,6 +2,7 @@ import { HttpException, Injectable } from "@nestjs/common";
 import {
   ICalculateRide,
   IConfirmRide,
+  IGetRidesByQuerys,
   RideRepository,
 } from "../interfaces/prisma-ride-repository";
 import { DriverRepository } from "src/modules/driver/interfaces/prisma-driver-repository";
@@ -35,9 +36,9 @@ export class RideService {
 
     const drivers = await this.driverRepository.getDrivers();
 
-    const filterDriverForKm = drivers
-      ? drivers.filter((driver) => distanceInKm > driver.min_trip_km)
-      : mockDrivers.filter((driver) => distanceInKm > driver.min_trip_km);
+    const filterDriverForKm = drivers.filter(
+      (driver) => distanceInKm > driver.min_trip_km,
+    );
 
     const driversFormat = filterDriverForKm.map((driver) => {
       const totalValue = driver.min_km_fee * distanceInKm;
@@ -117,7 +118,7 @@ export class RideService {
     }
 
     const data = {
-      customer_id,
+      user_id: customer_id,
       origin,
       destination,
       distance,
@@ -126,10 +127,33 @@ export class RideService {
       value,
     };
 
-    await this.rideRepository.createRide(data);
+    await this.rideRepository.createRide({ customer_id, data });
 
     return {
       success: true,
     };
+  }
+
+  async getRidesByCustomerId({ customer_id, driver_id }: IGetRidesByQuerys) {
+    if (driver_id) {
+      const driver = await this.driverRepository.getDriverById(driver_id);
+
+      if (!driver) {
+        throw new HttpException(
+          {
+            error_code: "INVALID_DRIVER",
+            message: "Motorista inválido",
+          },
+          400,
+        );
+      }
+    }
+
+    const ridesByCustomerId = await this.rideRepository.getRidesByQuerys({
+      customer_id,
+      driver_id,
+    });
+
+    return ridesByCustomerId;
   }
 }

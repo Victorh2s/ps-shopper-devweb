@@ -17,18 +17,27 @@ model Drivers {
   id          Int       @id @default(autoincrement())
   name        String
   description String
-  car         String
-  rating      String
+  vehicle     String
   min_km_fee  Float
   min_trip_km Float
+  Review      Reviews[]
   Rides       Rides[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt()
   deletedAt   DateTime?
 }
 
+model Reviews {
+    id          Int       @id @default(autoincrement())
+    rating  Int
+    comment String
+    driver Drivers @relation(fields: [driver_id], references: [id])
+    driver_id Int
+}
+
 model Rides {
-  customer_id Int       @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
+  customer_id String    @unique
   origin      String
   destination String
   distance    Int

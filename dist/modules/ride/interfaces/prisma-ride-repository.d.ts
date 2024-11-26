@@ -1,9 +1,5 @@
-export interface IRegisterUser {
-  username: string;
-  email: string;
-  password: string;
-}
 export interface ISaveRide {
+  customer_id: string;
   origin: string;
   destination: string;
   distance: number;
@@ -11,9 +7,26 @@ export interface ISaveRide {
   value: number;
   driver_id: number;
 }
+export interface ICalculateRide {
+  customer_id: string;
+  destination: string;
+  origin: string;
+}
 export interface IGetRidesByQuerys {
-  customer_id: number;
+  customer_id: string;
   driver_id: number;
+}
+export interface IConfirmRide {
+  customer_id: string;
+  origin: string;
+  destination: string;
+  distance: number;
+  duration: string;
+  driver: {
+    id: number;
+    name: string;
+  };
+  value: number;
 }
 export declare abstract class RideRepository {
   abstract createRide(data: ISaveRide): Promise<void>;
@@ -27,13 +40,13 @@ export declare abstract class RideRepository {
         name: string;
       };
     } & {
-      customer_id: number;
+      customer_id: string;
+      driver_id: number;
       origin: string;
       destination: string;
       distance: number;
       duration: string;
       value: number;
-      driver_id: number;
       createdAt: Date;
       updatedAt: Date;
       deletedAt: Date | null;

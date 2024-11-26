@@ -1,17 +1,28 @@
 import { HttpException, Injectable } from "@nestjs/common";
-import { ICalculateRide } from "../interfaces/prisma-ride-repository";
+import {
+  ICalculateRide,
+  IConfirmRide,
+  RideRepository,
+} from "../interfaces/prisma-ride-repository";
 import { DriverRepository } from "src/modules/driver/interfaces/prisma-driver-repository";
 import { axiosMaps } from "src/shared/utils/api/axios";
 import { mockDrivers } from "src/modules/driver/mock/drivers";
 
 @Injectable()
 export class RideService {
-  constructor(private driverRepository: DriverRepository) {}
+  constructor(
+    private driverRepository: DriverRepository,
+    private rideRepository: RideRepository,
+  ) {}
 
   async calculateRide({ destination, origin }: ICalculateRide) {
     if (origin === destination) {
       throw new HttpException(
-        "Os endereços de origem e destino não podem ser o mesmo endereço",
+        {
+          error_code: "INVALID_DATA",
+          message:
+            "Os endereços de origem e destino não podem ser o mesmo endereço",
+        },
         400,
       );
     }
@@ -25,8 +36,8 @@ export class RideService {
     const drivers = await this.driverRepository.getDrivers();
 
     const filterDriverForKm = drivers
-      ? drivers.filter((driver) => distanceInKm >= driver.min_trip_km)
-      : mockDrivers.filter((driver) => distanceInKm >= driver.min_trip_km);
+      ? drivers.filter((driver) => distanceInKm > driver.min_trip_km)
+      : mockDrivers.filter((driver) => distanceInKm > driver.min_trip_km);
 
     const driversFormat = filterDriverForKm.map((driver) => {
       const totalValue = driver.min_km_fee * distanceInKm;
@@ -59,5 +70,66 @@ export class RideService {
     };
 
     return response;
+  }
+
+  async confirmRide({
+    customer_id,
+    origin,
+    destination,
+    distance,
+    duration,
+    driver,
+    value,
+  }: IConfirmRide) {
+    if (origin === destination) {
+      throw new HttpException(
+        {
+          error_code: "INVALID_DATA",
+          message:
+            "Os endereços de origem e destino não podem ser o mesmo endereço",
+        },
+        400,
+      );
+    }
+
+    const findDriver = mockDrivers.find((item) => item.id === driver.id);
+
+    if (!findDriver) {
+      throw new HttpException(
+        {
+          error_code: "DRIVER_NOT_FOUND",
+          message: "Motorista não encontrado",
+        },
+        404,
+      );
+    }
+
+    const distanceInKm = distance / 1000;
+
+    if (findDriver.min_trip_km > distanceInKm) {
+      throw new HttpException(
+        {
+          error_code: "INVALID_DISTANCE",
+          message: "Quilometragem inválida para o motorista",
+        },
+        406,
+      );
+    }
+
+    const data = {
+      customer_id,
+      origin,
+      destination,
+      distance,
+      duration,
+      driver_id: driver.id,
+      value,
+    };
+
+    await this.rideRepository.createRide(data);
+
+    return {
+      success: true,
+    };
   }
 }

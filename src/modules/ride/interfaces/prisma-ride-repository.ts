@@ -19,6 +19,19 @@ export interface IGetRidesByQuerys {
   driver_id: number;
 }
 
+export interface IConfirmRide {
+  customer_id: string;
+  origin: string;
+  destination: string;
+  distance: number;
+  duration: string;
+  driver: {
+    id: number;
+    name: string;
+  };
+  value: number;
+}
+
 export abstract class RideRepository {
   abstract createRide(data: ISaveRide): Promise<void>;
 

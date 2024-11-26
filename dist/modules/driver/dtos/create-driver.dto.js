@@ -34,14 +34,18 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)({ message: "Esse campo precisar preenchido como uma 'String'" }),
     (0, class_validator_1.MaxLength)(150, {
-        message: "O descrição do carro deve ter até 150 caracteres",
+        message: "O descrição do veículo deve ter até 150 caracteres",
     }),
     __metadata("design:type", String)
-], CreateDriverDto.prototype, "car", void 0);
+], CreateDriverDto.prototype, "vehicle", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], CreateDriverDto.prototype, "rating", void 0);
 __decorate([
     (0, class_validator_1.IsString)({ message: "Esse campo precisar preenchido como uma 'String'" }),
     __metadata("design:type", String)
-], CreateDriverDto.prototype, "rating", void 0);
+], CreateDriverDto.prototype, "comment", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)({

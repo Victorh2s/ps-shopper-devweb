@@ -20,12 +20,13 @@ let DriverController = class DriverController {
     constructor(driverService) {
         this.driverService = driverService;
     }
-    async createDriver({ name, description, rating, car, min_km_fee, min_trip_km, }) {
+    async createDriver({ name, description, vehicle, comment, rating, min_km_fee, min_trip_km, }) {
         await this.driverService.createDriver({
             name,
             description,
+            comment,
             rating,
-            car,
+            vehicle,
             min_km_fee,
             min_trip_km,
         });

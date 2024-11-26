@@ -6,8 +6,9 @@ export declare class DriverController {
   createDriver({
     name,
     description,
+    vehicle,
+    comment,
     rating,
-    car,
     min_km_fee,
     min_trip_km,
   }: CreateDriverDto): Promise<{

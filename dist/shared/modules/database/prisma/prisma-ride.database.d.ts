@@ -15,8 +15,9 @@ export declare class PrismaRideDatabase implements RideRepository {
         name: string;
       };
     } & {
-      customer_id: number;
+      customer_id: string;
       driver_id: number;
+      id: number;
       origin: string;
       destination: string;
       distance: number;

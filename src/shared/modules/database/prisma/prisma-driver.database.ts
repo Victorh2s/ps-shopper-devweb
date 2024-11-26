@@ -41,4 +41,12 @@ export class PrismaDriverDatabase implements DriverRepository {
       include: { Review: true },
     });
   }
+
+  async getDriverById(driver_id: number) {
+    return await this.prisma.drivers.findUnique({
+      where: {
+        id: Number(driver_id),
+      },
+    });
+  }
 }

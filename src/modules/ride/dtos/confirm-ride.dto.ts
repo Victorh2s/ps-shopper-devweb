@@ -35,7 +35,10 @@ export class ConfirmRideDto {
   })
   destination: string;
 
-  @IsNumber()
+  @IsNumber(
+    {},
+    { message: "O campo 'distance' precisa ser preenchido como número." },
+  )
   @IsNotEmpty({
     message: "O campo 'distance' precisa ser preenchido.",
   })
@@ -55,7 +58,10 @@ export class ConfirmRideDto {
   @IsNotEmpty({ message: "O campo 'driver' precisa ser preenchido." })
   driver: DriverDto;
 
-  @IsNumber()
+  @IsNumber(
+    {},
+    { message: "O campo 'value' precisa ser preenchido como número." },
+  )
   @IsNotEmpty({
     message: "O campo 'value' precisa ser preenchido.",
   })

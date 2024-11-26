@@ -37,7 +37,8 @@ model Reviews {
 
 model Rides {
   id          Int       @id @default(autoincrement())
-  customer_id String    @unique
+  user        User      @relation(fields: [user_id], references: [customer_id])
+  user_id     String
   origin      String
   destination String
   distance    Int
@@ -45,6 +46,14 @@ model Rides {
   value       Int
   driver      Drivers   @relation(fields: [driver_id], references: [id])
   driver_id   Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt()
+  deletedAt   DateTime?
+}
+
+model User {
+  customer_id String @id @unique
+  rides  Rides[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt()
   deletedAt   DateTime?

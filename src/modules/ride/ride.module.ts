@@ -1,11 +1,23 @@
 import { Module } from "@nestjs/common";
-import { RideController } from "./controllers/ride.controller";
-import { RideService } from "./services/ride.service";
 import { DatabaseModule } from "src/shared/modules/database/database.module";
+import { CalculateRideService } from "./services/calculate-ride.service";
+import { ConfirmRideService } from "./services/confirm-ride.service";
+import { GetRidesByQuerysService } from "./services/get-rides-by-querys.service";
+import { RideEstimateController } from "./controllers/ride-estimate.controller";
+import { RideConfirmationController } from "./controllers/ride-confirmation.controller";
+import { RidesController } from "./controllers/rides.controller";
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [RideController],
-  providers: [RideService],
+  controllers: [
+    RideEstimateController,
+    RideConfirmationController,
+    RidesController,
+  ],
+  providers: [
+    CalculateRideService,
+    ConfirmRideService,
+    GetRidesByQuerysService,
+  ],
 })
 export class RideModule {}

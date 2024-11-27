@@ -1,6 +1,5 @@
 export const mockDrivers = [
   {
-    id: 1,
     name: "Homer Simpson",
     description:
       "Olá! Sou o Homer, seu motorista camarada! Relaxe e aproveite o passeio, com direito a rosquinhas e boas risadas (e talvez alguns desvios).",
@@ -32,5 +31,16 @@ export const mockDrivers = [
     rating: 5,
     comment:
       "Serviço impecável! O motorista é a própria definição de classe e o carro é simplesmente magnífico. Uma experiência digna de um agente secreto.",
+  },
+  {
+    name: "McLovin",
+    description:
+      "Olá gatinhas! Prazer, McLovin o rei da sedução. Entre no carro, aperte o cinto e cuidado para não se apaixonar pelo garanhão aqui s2",
+    vehicle: "Astra 2.0 de leilão, cheio de multa e rebaixado.",
+    rating: 5,
+    comment:
+      "Piloto extremamente sensual e atraente, fiquei bem à vontade com ele no carro rs...",
+    min_km_fee: 50.0,
+    min_trip_km: 25,
   },
 ];

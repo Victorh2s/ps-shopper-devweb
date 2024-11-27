@@ -1,10 +1,10 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { DriverService } from "../services/driver.service";
+import { CreateDriverService } from "../services/create-driver.service";
 import { CreateDriverDto } from "../dtos/create-driver.dto";
 
 @Controller("driver")
-export class DriverController {
-  constructor(private readonly driverService: DriverService) {}
+export class CreateDriverController {
+  constructor(private readonly createDriverService: CreateDriverService) {}
 
   @Post("add")
   async createDriver(
@@ -19,7 +19,7 @@ export class DriverController {
       min_trip_km,
     }: CreateDriverDto,
   ) {
-    await this.driverService.createDriver({
+    await this.createDriverService.execute({
       name,
       description,
       comment,

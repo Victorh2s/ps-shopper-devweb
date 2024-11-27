@@ -11,7 +11,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       const drivers = await this.drivers.findMany();
 
       if (drivers.length === 0) {
-        mockDrivers.map(async (data) => {
+        for (const data of mockDrivers) {
           await this.drivers.create({
             data: {
               name: data.name,
@@ -27,8 +27,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
               },
             },
           });
-        });
-        console.log("Motoristas adicionados automaticamente no banco");
+        }
+        console.log(
+          "Motoristas adicionados automaticamente no banco, na ordem definida.",
+        );
       }
     } catch (error) {
       console.error("Erro ao inicializar dados do Prisma:", error);

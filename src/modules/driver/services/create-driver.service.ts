@@ -5,10 +5,10 @@ import {
 } from "../interfaces/prisma-driver-repository";
 
 @Injectable()
-export class DriverService {
+export class CreateDriverService {
   constructor(private driverRepository: DriverRepository) {}
 
-  async createDriver(data: ICreateDriver) {
+  async execute(data: ICreateDriver) {
     await this.driverRepository.createDriver(data);
   }
 }

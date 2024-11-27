@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("postgresql://dbuser:dbpassword@localhost:5433/shopper-database?schema=public")
+  url      = "postgresql://dbuser:dbpassword@localhost:5433/shopper-database?schema=public"
 }
 
 model Drivers {

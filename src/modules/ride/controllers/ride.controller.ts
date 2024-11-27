@@ -11,7 +11,7 @@ import {
 } from "@nestjs/common";
 import { RideService } from "../services/ride.service";
 import { CalculateRideDto } from "../dtos/calculate-ride.dto";
-import { CustomHttpExceptionFilter } from "../filters/http-exception.filter";
+import { CustomHttpExceptionFilter } from "../../../shared/common/filters/http-exception.filter";
 import { ConfirmRideDto } from "../dtos/confirm-ride.dto";
 import { GetRidesQueryDto } from "../dtos/get-rides-query.dto";
 import { GetRidesParamDto } from "../dtos/get-rides-param.dto";

@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import { ICalculateRide } from "../interfaces/prisma-ride-repository";
-import { DriverRepository } from "src/modules/driver/interfaces/prisma-driver-repository";
 import { axiosMaps } from "src/shared/utils/api/axios";
+import { DriverRepository } from "src/modules/driver/interfaces/prisma-driver-repository";
 
 @Injectable()
 export class CalculateRideService {

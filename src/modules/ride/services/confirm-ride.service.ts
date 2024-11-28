@@ -45,8 +45,6 @@ export class ConfirmRideService {
     }
 
     const distanceInKm = distance / 1000;
-    console.log(findDriver.min_km_fee);
-    console.log(distanceInKm);
 
     if (findDriver.min_trip_km > distanceInKm) {
       throw new HttpException(

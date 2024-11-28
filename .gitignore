@@ -2,3 +2,4 @@ node_modules
 infos.txt
 .env
 dist
+coverage

@@ -2,6 +2,36 @@
 # SPDX-License-Identifier: APACHE-2.0
 
 services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
+    container_name: backend
+    ports:
+      - '8080:8080'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - bigdata_dev
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend
+    container_name: frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - '80:80'
+    networks:
+      - bigdata_dev
+
   postgresql-master:
     image: docker.io/bitnami/postgresql:17
     ports:
@@ -14,6 +44,12 @@ services:
       - POSTGRESQL_DATABASE=shopper-database
     networks:
       - bigdata_dev
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "dbuser"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
 
 networks:
   bigdata_dev:
